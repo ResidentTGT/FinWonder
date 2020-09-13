@@ -1,16 +1,15 @@
 import "reflect-metadata";
 import express from 'express';
 import { environment as env } from './environments/environment';
-import * as handlers from './handlers';
-import { connect, model, Schema } from 'mongoose';
-import { User } from "./models/user.model";
+import { connect } from 'mongoose';
 
-import { Request, Response } from 'express';
+import { container } from "tsyringe";
+import { AuthService } from "./services/auth.service";
+import { authRouter } from "./controllers/auth.router";
 
 const app = express();
 
-const url = `mongodb://localhost:${env.mongodb.port}/${env.mongodb.name}`;
-connect(url, { useNewUrlParser: true }, function (err) {
+connect(env.mongodb.connectionUrl, { useNewUrlParser: true }, function (err) {
     if (err) return console.log(err);
     app.listen(env.port, err => {
         if (err) return console.error(err);
@@ -18,16 +17,15 @@ connect(url, { useNewUrlParser: true }, function (err) {
     });
 });
 
-app.get('/', handlers.rootHandler);
+container.register<AuthService>(AuthService, { useClass: AuthService });
 
-const usersHandler = (_req: Request, res: Response) => {
-    User.find({}, function (err, users) {
-        if (err) return console.log(err);
-        return res.send(users);
-    });
-};
+app.use(express.json());
+app.use("/auth", authRouter);
 
-app.get("/api/users", usersHandler);
+
+
+
+
 
 
 
