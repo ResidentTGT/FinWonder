@@ -5,7 +5,7 @@ import { connect } from 'mongoose';
 
 import { container } from "tsyringe";
 import { AuthService } from "./services/auth.service";
-import { authRouter } from "./controllers/auth.router";
+import { authController } from "./controllers/auth.controller";
 
 const app = express();
 
@@ -20,7 +20,7 @@ connect(env.mongodb.connectionUrl, { useNewUrlParser: true }, function (err) {
 container.register<AuthService>(AuthService, { useClass: AuthService });
 
 app.use(express.json());
-app.use("/auth", authRouter);
+app.use("/auth", authController);
 
 
 

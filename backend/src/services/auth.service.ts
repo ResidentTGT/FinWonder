@@ -3,6 +3,7 @@ import * as argon2 from 'argon2';
 import { User } from "./../models/user.model";
 import * as jwt from 'jsonwebtoken'
 import { environment } from "./../environments/environment";
+import { UserDto } from "./../dto/user";
 
 @injectable()
 export class AuthService {
@@ -10,33 +11,29 @@ export class AuthService {
     public async SignUp(email: string, password: string, name: string): Promise<any> {
         const passwordHashed = await argon2.hash(password);
 
-        const user = await User.create({
+        const userRecord = (await User.create({
             password: passwordHashed,
             email,
             name,
-        });
-        return Object.assign(new User(), user.toObject(), { password: null });
+        })).toObject();
+
+        return userRecord;
     }
 
-    public async Login(email: string, password: string): Promise<any> {
+    public async Login(email: string, password: string): Promise<UserDto> {
         const userRecord = await User.findOne({ email });
+
         if (!userRecord) {
             throw new Error('User not found')
         } else {
             const user = userRecord.toObject();
+
             const correctPassword = await argon2.verify(user.password, password);
             if (!correctPassword) {
                 throw new Error('Incorrect password')
             }
 
-            return {
-                user: {
-                    email: user.email,
-                    name: user.name,
-                },
-                token: this.generateToken(user),
-            }
-
+            return Object.assign(UserDto.createFrom(user), { token: this.generateToken(user) });
         }
     }
 
