@@ -1,7 +1,7 @@
 import { injectable } from "tsyringe";
 import * as argon2 from 'argon2';
 import { User } from "./../models/user.model";
-import * as jwt from 'jsonwebtoken'
+import * as jwt from 'jsonwebtoken';
 import { environment } from "./../environments/environment";
 import { UserDto } from "./../dto/user";
 
