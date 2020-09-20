@@ -1,0 +1,22 @@
+@import '~rsuite/dist/styles/rsuite-default.css';
+
+$font:'Roboto',
+'Oxygen',
+'Ubuntu',
+'Cantarell',
+'Fira Sans',
+'Droid Sans',
+'Helvetica Neue',
+sans-serif;
+
+html,
+body {
+    margin: 0;
+    height: 100%;
+    background-color: white;
+    overflow: hidden;
+
+    * {
+        font-family: #{$font};
+    }
+}

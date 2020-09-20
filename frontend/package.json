@@ -10,14 +10,19 @@
         "@types/node": "^12.12.59",
         "@types/react": "^16.9.49",
         "@types/react-dom": "^16.9.8",
+        "jsonwebtoken": "^8.5.1",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-scripts": "3.4.3",
+        "rsuite": "^4.8.2",
+        "rxjs": "^6.6.3",
         "typescript": "^3.7.5"
     },
     "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
+        "start": "env-cmd -f .env react-scripts start",
+        "start:prod": "env-cmd -f .env.production react-scripts start",
+        "build": "env-cmd -f .env react-scripts build",
+        "build:prod": "env-cmd -f .env.production react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
@@ -35,5 +40,10 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "@types/jsonwebtoken": "^8.5.0",
+        "env-cmd": "^10.1.0",
+        "node-sass": "^4.14.1"
     }
 }
