@@ -1,0 +1,22 @@
+.layout {
+    position: relative;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    form {
+        display: flex;
+        flex-direction: column;
+        .field {
+            margin-top: 25px;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            .link {
+                text-decoration: none;
+            }
+        }
+    }
+}

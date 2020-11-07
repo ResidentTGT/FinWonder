@@ -1,20 +1,14 @@
-@import '~rsuite/dist/styles/rsuite-default.css';
+@import "fontsource-roboto";
 
-$font:'Roboto',
-'Oxygen',
-'Ubuntu',
-'Cantarell',
-'Fira Sans',
-'Droid Sans',
-'Helvetica Neue',
-sans-serif;
+$font: "Roboto", "Helvetica", "Arial", sans-serif;
 
 html,
-body {
+body,
+#root {
     margin: 0;
     height: 100%;
+    width: 100%;
     background-color: white;
-    overflow: hidden;
 
     * {
         font-family: #{$font};
