@@ -3,6 +3,7 @@ import { ajax } from "rxjs/ajax";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { User } from "../../models/user.model";
+import backendApiService from "./backend-api.service";
 
 export class UsersApi {
     constructor(private _apiUrl: string) {}
@@ -23,23 +24,31 @@ export class UsersApi {
                     password: password,
                     email: email,
                 },
-                {
-                    "content-type": "application/json",
-                }
+                backendApiService.getDefaultHeaders()
             )
-            .pipe(map((r) => User.fromJSON(r.responseText)));
+            .pipe(map((r) => User.fromJSON(r.response)));
     }
 
-    public login(name: string, password: string): Observable<User> {
-        if (!name || !password) {
+    public login(email: string, password: string): Observable<User> {
+        if (!email || !password) {
             return EMPTY;
         }
 
         return ajax
-            .post(`${this._apiUrl}login`, {
-                name: name,
-                password: password,
-            })
-            .pipe(map((r) => User.fromJSON(r.responseText)));
+            .post(
+                `${this._apiUrl}/auth/login`,
+                {
+                    email,
+                    password,
+                },
+                backendApiService.getDefaultHeaders()
+            )
+            .pipe(map((r) => User.fromJSON(r.response)));
+    }
+
+    public getUser(): Observable<User> {
+        return ajax
+            .get(`${this._apiUrl}/user`, backendApiService.getDefaultHeaders())
+            .pipe(map((r) => User.fromJSON(r.response)));
     }
 }

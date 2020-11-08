@@ -13,12 +13,10 @@ authController.post("/register", async (req: Request, res: Response) => {
             return res.status(400).send("Wrong arguments.");
         }
 
-        const userDto = UserDto.createFrom(
-            await authService.SignUp(
-                req.body.email,
-                req.body.password,
-                req.body.name
-            )
+        const userDto = await authService.SignUp(
+            req.body.email,
+            req.body.password,
+            req.body.name
         );
 
         return res.status(200).send(userDto);

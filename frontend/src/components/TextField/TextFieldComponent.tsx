@@ -7,18 +7,21 @@ export type TextFieldProps = {
     label: string;
     entity: FieldState;
     changeFunc: any;
+    type: string;
 };
 
 export const TextFieldComponent: FunctionComponent<TextFieldProps> = ({
     label,
     entity,
     changeFunc,
+    type,
 }) => (
     <aside>
         <TextField
             required
             className={styles.textField}
             label={label}
+            type={type}
             variant="outlined"
             value={entity.value}
             error={!!entity.error}

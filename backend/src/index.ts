@@ -7,14 +7,11 @@ import { connect } from "mongoose";
 import { container } from "tsyringe";
 import { AuthService } from "./services/auth.service";
 import { authController } from "./controllers/auth.controller";
+import { userController } from "./controllers/user.controller";
+import authMiddleware from "./middlewares/auth.middleware";
 
 const app = express();
 
-const corsOptions = {
-    origin: "*",
-};
-
-app.use(cors());
 connect(env.mongodb.connectionUrl, { useNewUrlParser: true }, function (err) {
     if (err) return console.log(err);
     app.listen(env.port, (err) => {
@@ -25,6 +22,8 @@ connect(env.mongodb.connectionUrl, { useNewUrlParser: true }, function (err) {
 
 container.register<AuthService>(AuthService, { useClass: AuthService });
 
+app.use(cors());
 app.use(express.json());
 
 app.use("/auth", authController);
+app.use("/user", authMiddleware, userController);

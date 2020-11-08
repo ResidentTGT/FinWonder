@@ -12,10 +12,16 @@
         .user {
             display: flex;
             align-items: center;
+            .name {
+                margin-right: 15px;
+            }
             .link {
                 outline: none;
                 text-decoration: none;
                 color: white;
+                button {
+                    margin-left: 15px;
+                }
             }
         }
     }

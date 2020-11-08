@@ -11,7 +11,7 @@ export class AuthService {
         email: string,
         password: string,
         name: string
-    ): Promise<any> {
+    ): Promise<UserDto> {
         let userRecord;
         try {
             userRecord = await (await User.findOne({ email })).toObject();
@@ -36,7 +36,9 @@ export class AuthService {
             })
         ).toObject();
 
-        return newUserRecord;
+        return Object.assign(UserDto.createFrom(newUserRecord), {
+            token: this.generateToken(newUserRecord),
+        });
     }
 
     public async Login(email: string, password: string): Promise<UserDto> {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styles from "./Register.module.scss";
 import Button from "@material-ui/core/Button/Button";
@@ -7,11 +7,35 @@ import { FieldState } from "../../models/field-state.model";
 import { TextFieldComponent } from "../TextField/TextFieldComponent";
 import { isValidEmail } from "../../helpers/validateEmail";
 import userService from "../../services/user.service";
+import { tap } from "rxjs/internal/operators/tap";
+import { useHistory } from "react-router-dom";
+import { catchError } from "rxjs/internal/operators/catchError";
+import { EMPTY } from "rxjs";
 
 function RegisterComponent() {
     const [name, setName] = useState(new FieldState());
     const [password, setPassword] = useState(new FieldState());
     const [email, setEmail] = useState(new FieldState());
+    const [error, setError] = useState("");
+
+    const history = useHistory();
+
+    useEffect(() => {
+        const subscription = userService
+            .getUser()
+            .pipe(
+                tap((user) => {
+                    if (user) {
+                        history.push("/");
+                    }
+                })
+            )
+            .subscribe();
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, []);
 
     const isValidForm = (): boolean =>
         !!(
@@ -26,7 +50,17 @@ function RegisterComponent() {
     const register = () => {
         userService
             .register(name.value, password.value, email.value)
-            .subscribe((user) => console.log(`Successfull registration! ${user}`));
+            .pipe(
+                tap((user) => {
+                    userService.setUser(user);
+                    history.push("/");
+                }),
+                catchError((e) => {
+                    setError("Ошибка регистрации!");
+                    return EMPTY;
+                })
+            )
+            .subscribe();
     };
 
     const setValue = (stateName: string, value: string) => {
@@ -48,8 +82,8 @@ function RegisterComponent() {
                     error = "Пароль должен содержать не менее 8 символов";
                     break;
                 }
-                if (!/\d/.test(value)) {
-                    error = "Пароль должен содержать хотя бы одну цифру";
+                if (!/([0-9].*[a-z])|([a-z].*[0-9])/.test(value)) {
+                    error = "Пароль должен содержать хотя бы одну букву и цифру";
                     break;
                 }
                 break;
@@ -97,12 +131,17 @@ function RegisterComponent() {
                         <TextFieldComponent
                             label={f.label}
                             entity={f.entity}
+                            type={
+                                f.stateName === "password" ? "password" : "text"
+                            }
                             changeFunc={(value: string) =>
                                 setValue(f.stateName, value)
                             }
                         />
                     </div>
                 ))}
+
+                <div className={styles.error}>{error}</div>
 
                 <div className={styles.actions}>
                     <Link to="login" className={styles.link}>
