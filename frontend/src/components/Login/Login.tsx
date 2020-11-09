@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { EMPTY } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
-import { isValidEmail } from "../../helpers/validateEmail";
 import { FieldState } from "../../models/field-state.model";
 import userService from "../../services/user.service";
 import { TextFieldComponent } from "../TextField/TextFieldComponent";
@@ -35,7 +34,7 @@ function LoginComponent() {
         return () => {
             subscription.unsubscribe();
         };
-    }, []);
+    }, [history]);
 
     const login = () => {
         userService

@@ -19,6 +19,9 @@
                 outline: none;
                 text-decoration: none;
                 color: white;
+                &.active button {
+                    background-color: rgba(0, 0, 0, 0.2);
+                }
                 button {
                     margin-left: 15px;
                 }

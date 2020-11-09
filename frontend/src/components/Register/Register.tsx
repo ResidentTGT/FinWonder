@@ -35,7 +35,7 @@ function RegisterComponent() {
         return () => {
             subscription.unsubscribe();
         };
-    }, []);
+    }, [history]);
 
     const isValidForm = (): boolean =>
         !!(

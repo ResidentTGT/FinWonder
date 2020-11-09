@@ -2,8 +2,7 @@ import { Button, IconButton, Typography } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import PersonIcon from "@material-ui/icons/Person";
+import { NavLink } from "react-router-dom";
 import ExitToApp from "@material-ui/icons/ExitToApp";
 
 import styles from "./Header.module.scss";
@@ -49,7 +48,7 @@ function Header() {
                         </>
                     ) : (
                         <>
-                            <Link to="register" className={styles.link}>
+                            <NavLink to="register" className={styles.link} activeClassName={styles.active}>
                                 <Button
                                     variant="contained"
                                     color="primary"
@@ -57,8 +56,8 @@ function Header() {
                                 >
                                     Регистрация
                                 </Button>
-                            </Link>
-                            <Link to="login" className={styles.link}>
+                            </NavLink>
+                            <NavLink to="login" className={styles.link} activeClassName={styles.active}>
                                 <Button
                                     variant="contained"
                                     color="primary"
@@ -66,7 +65,7 @@ function Header() {
                                 >
                                     Вход
                                 </Button>
-                            </Link>
+                            </NavLink>
                         </>
                     )}
                 </div>

@@ -9,6 +9,15 @@ import { LocalStorageEntities } from "../../services/local-storage.service";
 import userService from "../../services/user.service";
 import { tap } from "rxjs/internal/operators/tap";
 
+import InboxIcon from "@material-ui/icons/Inbox";
+import {
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+} from "@material-ui/core";
+import { NavLink } from "react-router-dom";
+
 function App() {
     const [loading, setLoading] = useState(true);
 
@@ -43,21 +52,39 @@ function App() {
                     <header className={styles.header}>
                         <Header />
                     </header>
-                    <main className={styles.main}>
-                        <Switch>
-                            <Route
-                                exact
-                                path="/"
-                                component={MainPageComponent}
-                            />
-                            <Route
-                                exact
-                                path="/register"
-                                component={RegisterComponent}
-                            />
-                            <Route exact path="/login" component={Login} />
-                        </Switch>
-                    </main>
+
+                    <div className={styles.mainLayout}>
+                        <aside className={styles.aside}>
+                            <List>
+                                <ListItem
+                                    button
+                                    component={NavLink}
+                                    to="balances"
+                                    activeClassName={styles.active}
+                                >
+                                    <ListItemIcon>
+                                        <InboxIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Балансы" />
+                                </ListItem>
+                            </List>
+                        </aside>
+                        <main className={styles.main}>
+                            <Switch>
+                                <Route
+                                    exact
+                                    path="/"
+                                    component={MainPageComponent}
+                                />
+                                <Route
+                                    exact
+                                    path="/register"
+                                    component={RegisterComponent}
+                                />
+                                <Route exact path="/login" component={Login} />
+                            </Switch>
+                        </main>
+                    </div>
                 </>
             )}
         </div>
