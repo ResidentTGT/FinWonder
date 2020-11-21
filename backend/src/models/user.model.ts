@@ -1,11 +1,9 @@
 import { Schema, model } from "mongoose";
 
-const userScheme = new Schema(
-    {
-        email: String,
-        password: String,
-        name: String,
-        age: Number
-    },
-    { versionKey: false });
-export const User = model("User", userScheme);
+const userSchema = new Schema({
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    name: String,
+    birthday: Date,
+});
+export default model("users", userSchema);

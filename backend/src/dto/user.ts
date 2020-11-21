@@ -1,5 +1,5 @@
 export class UserDto {
-    public email: string;
+    public email: string = "";
     public name?: string;
     public age?: number;
     public token?: string;

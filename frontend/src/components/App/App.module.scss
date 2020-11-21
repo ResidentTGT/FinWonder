@@ -21,14 +21,11 @@ $header-height: 64px;
             position: relative;
             width: 200px;
             border-right: 1px solid rgba(0, 0, 0, 0.12);
-            .active{
-                background-color: rgba(0, 0, 0, 0.08);
-            }
         }
         main {
             position: relative;
             height: 100%;
-            flex:1;
+            flex: 1;
         }
     }
 }

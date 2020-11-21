@@ -1,13 +1,16 @@
 import localStorageService, {
     LocalStorageEntities,
 } from "../local-storage.service";
+import { BalancesApi } from "./balances-api";
 import { UsersApi } from "./users-api";
 
 export class BackendApiService {
     public Users: UsersApi;
+    public Balances: BalancesApi;
 
     constructor(private _apiUrl: string) {
         this.Users = new UsersApi(this._apiUrl);
+        this.Balances = new BalancesApi(this._apiUrl);
     }
 
     public getDefaultHeaders(): any {

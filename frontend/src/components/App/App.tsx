@@ -8,15 +8,8 @@ import { MainPageComponent } from "../MainPage/MainPage";
 import { LocalStorageEntities } from "../../services/local-storage.service";
 import userService from "../../services/user.service";
 import { tap } from "rxjs/internal/operators/tap";
-
-import InboxIcon from "@material-ui/icons/Inbox";
-import {
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-} from "@material-ui/core";
-import { NavLink } from "react-router-dom";
+import AsideComponent from "../Aside/Aside";
+import BalancesComponent from "../Balances/Balances";
 
 function App() {
     const [loading, setLoading] = useState(true);
@@ -29,8 +22,10 @@ function App() {
             subscription = userService
                 .getUser()
                 .pipe(tap((u) => userService.setUser(u)))
-                .subscribe(null, null, () => {
-                    setLoading(false);
+                .subscribe({
+                    complete: () => {
+                        setLoading(false);
+                    },
                 });
         } else {
             setLoading(false);
@@ -55,19 +50,7 @@ function App() {
 
                     <div className={styles.mainLayout}>
                         <aside className={styles.aside}>
-                            <List>
-                                <ListItem
-                                    button
-                                    component={NavLink}
-                                    to="balances"
-                                    activeClassName={styles.active}
-                                >
-                                    <ListItemIcon>
-                                        <InboxIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Балансы" />
-                                </ListItem>
-                            </List>
+                            <AsideComponent />
                         </aside>
                         <main className={styles.main}>
                             <Switch>
@@ -80,6 +63,11 @@ function App() {
                                     exact
                                     path="/register"
                                     component={RegisterComponent}
+                                />
+                                <Route
+                                    exact
+                                    path="/balances"
+                                    component={BalancesComponent}
                                 />
                                 <Route exact path="/login" component={Login} />
                             </Switch>

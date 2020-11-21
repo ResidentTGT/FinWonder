@@ -1,6 +1,6 @@
 import { injectable } from "tsyringe";
 import * as argon2 from "argon2";
-import { User } from "./../models/user.model";
+import users from "./../models/user.model";
 import * as jwt from "jsonwebtoken";
 import { environment } from "./../environments/environment";
 import { UserDto } from "./../dto/user";
@@ -14,13 +14,13 @@ export class AuthService {
     ): Promise<UserDto> {
         let userRecord;
         try {
-            userRecord = await (await User.findOne({ email })).toObject();
+            userRecord = await (await users.findOne({ email }))?.toObject();
         } catch {}
         if (userRecord) {
             throw new Error("User with such email already exist.");
         }
         try {
-            userRecord = await (await User.findOne({ name: name })).toObject();
+            userRecord = await (await users.findOne({ name: name }))?.toObject();
         } catch {}
         if (userRecord) {
             throw new Error("User with such name already exist.");
@@ -29,7 +29,7 @@ export class AuthService {
         const passwordHashed = await argon2.hash(password);
 
         const newUserRecord = (
-            await User.create({
+            await users.create({
                 password: passwordHashed,
                 email,
                 name,
@@ -42,7 +42,7 @@ export class AuthService {
     }
 
     public async Login(email: string, password: string): Promise<UserDto> {
-        const userRecord = await User.findOne({ email });
+        const userRecord = await users.findOne({ email });
 
         if (!userRecord) {
             throw new Error("User not found");

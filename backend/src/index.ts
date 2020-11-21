@@ -9,6 +9,7 @@ import { AuthService } from "./services/auth.service";
 import { authController } from "./controllers/auth.controller";
 import { userController } from "./controllers/user.controller";
 import authMiddleware from "./middlewares/auth.middleware";
+import { balancesController } from "./controllers/balances.controller";
 
 const app = express();
 
@@ -27,3 +28,4 @@ app.use(express.json());
 
 app.use("/auth", authController);
 app.use("/user", authMiddleware, userController);
+app.use("/balances", authMiddleware, balancesController);

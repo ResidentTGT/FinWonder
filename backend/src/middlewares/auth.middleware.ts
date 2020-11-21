@@ -17,8 +17,10 @@ export default (req: Request, res: Response, next: any) => {
     } catch (e) {
         return res.status(401).end("Invalid token.");
     }
-
-    if (!isVerified) {
+    if (isVerified) {
+        const parsedToken = <any>jwt.verify(token, environment.jwt.signature);
+        (<any>req).userId = parsedToken.data._id;
+    } else {
         return res.status(401).end("Authorization is failed.");
     }
 
