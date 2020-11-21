@@ -4,7 +4,7 @@ logs
 npm-debug.log*
 
 # compiled output
-frontend/dist
+frontend/build
 backend/dist
 /tmp
 /out-tsc
