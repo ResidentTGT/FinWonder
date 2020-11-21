@@ -1,25 +1,25 @@
-import { BehaviorSubject, EMPTY, Observable } from "rxjs";
-import { User } from "../models/user.model";
+import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
+import { User } from '../models/user.model';
 import backendService, {
     BackendApiService,
-} from "./backend/backend-api.service";
-import { catchError, tap } from "rxjs/operators";
+} from './backend/backend-api.service';
+import { catchError, tap } from 'rxjs/operators';
 import localStorageService, {
     LocalStorageEntities,
-} from "./local-storage.service";
+} from './local-storage.service';
 
 export class UserService {
     private _user: BehaviorSubject<User> = new BehaviorSubject(new User());
 
     constructor(private _backendApiService: BackendApiService) {
-
         //const  exp  = jwt.decode(<string>user.token);
         // if(user && user.token &&)
     }
 
-    public getUserObservable = () => this._user.asObservable();
+    public getUserObservable = (): Observable<User> =>
+        this._user.asObservable();
 
-    public setUser(user: User) {
+    public setUser(user: User): void {
         if (user && user.token) {
             localStorageService.setSettings(
                 LocalStorageEntities.Token,
@@ -30,14 +30,17 @@ export class UserService {
         this._user.next(user);
     }
 
-    public login(email: string, password: string): Observable<any> {
+    public login(email: string, password: string): Observable<User> {
         if (!email || !password) {
             return EMPTY;
         }
 
         return this._backendApiService.Users.login(email, password).pipe(
             tap((resp) => {
-                localStorage.setItem(LocalStorageEntities.Token, JSON.stringify(resp.token));
+                localStorage.setItem(
+                    LocalStorageEntities.Token,
+                    JSON.stringify(resp.token)
+                );
                 this._user.next(resp);
             })
         );
@@ -51,11 +54,7 @@ export class UserService {
         if (!name || !password || !email) {
             return EMPTY;
         }
-        return this._backendApiService.Users.register(
-            name,
-            password,
-            email
-        );
+        return this._backendApiService.Users.register(name, password, email);
     }
 
     public getUser(): Observable<User> {

@@ -1,12 +1,12 @@
-import { TextField } from "@material-ui/core";
-import React, { FunctionComponent } from "react";
-import { FieldState } from "../../models/field-state.model";
-import styles from "./TextFieldComponent.module.scss";
+import { TextField } from '@material-ui/core';
+import React, { FunctionComponent } from 'react';
+import { FieldState } from '../../models/field-state.model';
+import styles from './TextFieldComponent.module.scss';
 
 export type TextFieldProps = {
     label: string;
     entity: FieldState;
-    changeFunc: any;
+    changeFunc: Function;
     type: string;
 };
 
@@ -26,7 +26,7 @@ export const TextFieldComponent: FunctionComponent<TextFieldProps> = ({
             value={entity.value}
             error={!!entity.error}
             helperText={entity.error}
-            onChange={(event) => changeFunc(event.target.value)}
+            onChange={(event): void => changeFunc(event.target.value)}
         />
     </aside>
 );

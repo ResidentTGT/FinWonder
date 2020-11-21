@@ -1,14 +1,17 @@
 export enum LocalStorageEntities {
-    Token = "token",
+    Token = 'token',
 }
 
 export class LocalStorageService {
     public getSettings = (key: LocalStorageEntities): string | null =>
         localStorage.getItem(key);
 
-    public setSettings(key: LocalStorageEntities, object: any) {
+    public setSettings(
+        key: LocalStorageEntities,
+        object: object | string
+    ): void {
         if (!key) {
-            throw new Error("There is no key for setting in local storage.");
+            throw new Error('There is no key for setting in local storage.');
         }
 
         localStorage.setItem(key, JSON.stringify(object));

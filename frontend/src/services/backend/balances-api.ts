@@ -1,8 +1,8 @@
-import { ajax } from "rxjs/ajax";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
-import backendApiService from "./backend-api.service";
-import { Balance } from "../../models/balance.model";
+import { ajax } from 'rxjs/ajax';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import backendApiService from './backend-api.service';
+import { Balance } from '../../models/balance.model';
 
 export class BalancesApi {
     constructor(private _apiUrl: string) {}
@@ -13,6 +13,8 @@ export class BalancesApi {
                 `${this._apiUrl}/balances`,
                 backendApiService.getDefaultHeaders()
             )
-            .pipe(map((r) => r.response.map((b: any) => Balance.fromJSON(b))));
+            .pipe(
+                map((r) => r.response.map((b: Balance) => Balance.fromJSON(b)))
+            );
     }
 }

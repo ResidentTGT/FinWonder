@@ -1,9 +1,9 @@
-import { EMPTY } from "rxjs";
-import { ajax } from "rxjs/ajax";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
-import { User } from "../../models/user.model";
-import backendApiService from "./backend-api.service";
+import { EMPTY } from 'rxjs';
+import { ajax } from 'rxjs/ajax';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { User } from '../../models/user.model';
+import backendApiService from './backend-api.service';
 
 export class UsersApi {
     constructor(private _apiUrl: string) {}

@@ -1,10 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.scss";
-import App from "./components/App/App";
-import { BrowserRouter } from "react-router-dom";
-import { ThemeProvider } from "@material-ui/core";
-import { theme } from "./pallette";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.scss';
+import { App } from './components/App/App';
+import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/core';
+import { theme } from './pallette';
 
 ReactDOM.render(
     <React.StrictMode>
@@ -14,5 +14,5 @@ ReactDOM.render(
             </BrowserRouter>
         </ThemeProvider>
     </React.StrictMode>,
-    document.getElementById("root")
+    document.getElementById('root')
 );

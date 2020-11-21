@@ -5,7 +5,7 @@ export class Balance {
     public isActive?: boolean;
     public creationDate?: Date;
 
-    static fromJSON(obj: any): Balance {
+    static fromJSON(obj: Balance): Balance {
         return Object.assign(new Balance(), obj, {
             creationDate: obj.creationDate ? new Date(obj.creationDate) : null,
         });

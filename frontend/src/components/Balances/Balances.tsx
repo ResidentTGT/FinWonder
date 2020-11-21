@@ -7,16 +7,16 @@ import {
     Paper,
     TableContainer,
     Button,
-} from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-import { tap } from "rxjs/internal/operators/tap";
-import { Balance } from "../../models/balance.model";
-import balancesService from "../../services/balances.service";
-import { LoadingSpinnerComponent } from "../shared/LoadingSpinner/LoadingSpinner";
-import { TableRowComponent } from "../TableRow/TableRow";
-import styles from "./Balances.module.scss";
+} from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { tap } from 'rxjs/internal/operators/tap';
+import { Balance } from '../../models/balance.model';
+import balancesService from '../../services/balances.service';
+import { LoadingSpinnerComponent } from '../shared/LoadingSpinner/LoadingSpinner';
+import { TableRowComponent } from '../TableRow/TableRow';
+import styles from './Balances.module.scss';
 
-const BalancesComponent = () => {
+export const BalancesComponent = (): JSX.Element => {
     const [balances, setBalances] = useState<Balance[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -34,7 +34,7 @@ const BalancesComponent = () => {
                 },
             });
 
-        return () => {
+        return (): void => {
             if (subscription) {
                 subscription.unsubscribe();
             }
@@ -77,5 +77,3 @@ const BalancesComponent = () => {
         </div>
     );
 };
-
-export default BalancesComponent;

@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import styles from "./Register.module.scss";
-import Button from "@material-ui/core/Button/Button";
-import { Link } from "react-router-dom";
-import { FieldState } from "../../models/field-state.model";
-import { TextFieldComponent } from "../TextField/TextFieldComponent";
-import { isValidEmail } from "../../helpers/validateEmail";
-import userService from "../../services/user.service";
-import { tap } from "rxjs/internal/operators/tap";
-import { useHistory } from "react-router-dom";
-import { catchError } from "rxjs/internal/operators/catchError";
-import { EMPTY } from "rxjs";
+import styles from './Register.module.scss';
+import Button from '@material-ui/core/Button/Button';
+import { Link } from 'react-router-dom';
+import { FieldState } from '../../models/field-state.model';
+import { TextFieldComponent } from '../TextField/TextFieldComponent';
+import { isValidEmail } from '../../helpers/validateEmail';
+import userService from '../../services/user.service';
+import { tap } from 'rxjs/internal/operators/tap';
+import { useHistory } from 'react-router-dom';
+import { catchError } from 'rxjs/internal/operators/catchError';
+import { EMPTY, Observable } from 'rxjs';
 
-function RegisterComponent() {
+export const RegisterComponent = (): JSX.Element => {
     const [name, setName] = useState(new FieldState());
     const [password, setPassword] = useState(new FieldState());
     const [email, setEmail] = useState(new FieldState());
-    const [error, setError] = useState("");
+    const [error, setError] = useState('');
 
     const history = useHistory();
 
@@ -26,13 +26,13 @@ function RegisterComponent() {
             .pipe(
                 tap((user) => {
                     if (user) {
-                        history.push("/");
+                        history.push('/');
                     }
                 })
             )
             .subscribe();
 
-        return () => {
+        return (): void => {
             subscription.unsubscribe();
         };
     }, [history]);
@@ -47,58 +47,61 @@ function RegisterComponent() {
             !password.error
         );
 
-    const register = () => {
+    const register = (): void => {
         userService
             .register(name.value, password.value, email.value)
             .pipe(
                 tap((user) => {
                     userService.setUser(user);
-                    history.push("/");
+                    history.push('/');
                 }),
-                catchError((e) => {
-                    setError("Ошибка регистрации!");
-                    return EMPTY;
-                })
+                catchError(
+                    (e): Observable<never> => {
+                        setError('Ошибка регистрации!');
+                        return EMPTY;
+                    }
+                )
             )
             .subscribe();
     };
 
-    const setValue = (stateName: string, value: string) => {
+    const setValue = (stateName: string, value: string): void => {
         let func: Function = () => null;
-        let error = "";
+        let error = '';
 
         switch (stateName) {
-            case "name":
+            case 'name':
                 func = setName;
-                error = value ? "" : "Обязательное поле";
+                error = value ? '' : 'Обязательное поле';
                 break;
-            case "password":
+            case 'password':
                 func = setPassword;
                 if (!value) {
-                    error = "Обязательное поле";
+                    error = 'Обязательное поле';
                     break;
                 }
                 if (value.length < 8) {
-                    error = "Пароль должен содержать не менее 8 символов";
+                    error = 'Пароль должен содержать не менее 8 символов';
                     break;
                 }
                 if (!/([0-9].*[a-z])|([a-z].*[0-9])/.test(value)) {
-                    error = "Пароль должен содержать хотя бы одну букву и цифру";
+                    error =
+                        'Пароль должен содержать хотя бы одну букву и цифру';
                     break;
                 }
                 break;
-            case "email":
+            case 'email':
                 func = setEmail;
                 if (!value) {
-                    error = "Обязательное поле";
+                    error = 'Обязательное поле';
                     break;
                 }
                 if (!isValidEmail(value)) {
-                    error = "Email имеет неправильный формат";
+                    error = 'Email имеет неправильный формат';
                     break;
                 }
 
-                error = "";
+                error = '';
                 break;
         }
 
@@ -107,18 +110,18 @@ function RegisterComponent() {
 
     const fields: { label: string; stateName: string; entity: FieldState }[] = [
         {
-            label: "Имя",
-            stateName: "name",
+            label: 'Имя',
+            stateName: 'name',
             entity: name,
         },
         {
-            label: "Email",
-            stateName: "email",
+            label: 'Email',
+            stateName: 'email',
             entity: email,
         },
         {
-            label: "Пароль",
-            stateName: "password",
+            label: 'Пароль',
+            stateName: 'password',
             entity: password,
         },
     ];
@@ -132,9 +135,9 @@ function RegisterComponent() {
                             label={f.label}
                             entity={f.entity}
                             type={
-                                f.stateName === "password" ? "password" : "text"
+                                f.stateName === 'password' ? 'password' : 'text'
                             }
-                            changeFunc={(value: string) =>
+                            changeFunc={(value: string): void =>
                                 setValue(f.stateName, value)
                             }
                         />
@@ -162,6 +165,4 @@ function RegisterComponent() {
             </form>
         </div>
     );
-}
-
-export default RegisterComponent;
+};

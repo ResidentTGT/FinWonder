@@ -5,7 +5,7 @@ export class User {
     public age?: number;
     public token?: string;
 
-    static fromJSON(obj: any): User {
+    static fromJSON(obj: object): User {
         return Object.assign(new User(), obj);
     }
 }

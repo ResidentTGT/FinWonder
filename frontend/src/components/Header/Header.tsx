@@ -1,19 +1,19 @@
-import { Button, IconButton, Typography } from "@material-ui/core";
-import AppBar from "@material-ui/core/AppBar/AppBar";
-import Toolbar from "@material-ui/core/Toolbar/Toolbar";
-import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-import ExitToApp from "@material-ui/icons/ExitToApp";
+import { Button, IconButton, Typography } from '@material-ui/core';
+import AppBar from '@material-ui/core/AppBar/AppBar';
+import Toolbar from '@material-ui/core/Toolbar/Toolbar';
+import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import ExitToApp from '@material-ui/icons/ExitToApp';
 
-import styles from "./Header.module.scss";
-import userService from "../../services/user.service";
-import { tap } from "rxjs/internal/operators/tap";
-import { User } from "../../models/user.model";
+import styles from './Header.module.scss';
+import userService from '../../services/user.service';
+import { tap } from 'rxjs/internal/operators/tap';
+import { User } from '../../models/user.model';
 import localStorageService, {
     LocalStorageEntities,
-} from "../../services/local-storage.service";
+} from '../../services/local-storage.service';
 
-function Header() {
+export const Header = (): JSX.Element => {
     const [user, setUser] = useState<User>();
 
     useEffect(() => {
@@ -22,12 +22,12 @@ function Header() {
             .pipe(tap((u) => setUser(u)))
             .subscribe();
 
-        return () => {
+        return (): void => {
             subscription.unsubscribe();
         };
     }, []);
 
-    const logout = () => {
+    const logout = (): void => {
         localStorageService.deleteSettings(LocalStorageEntities.Token);
         window.location.reload();
     };
@@ -39,7 +39,7 @@ function Header() {
                     FinWonder
                 </Typography>
                 <div className={styles.user}>
-                    {!!user?.email ? (
+                    {user?.email ? (
                         <>
                             <div className={styles.name}>{user.name}</div>
                             <IconButton color="inherit" onClick={logout}>
@@ -48,7 +48,11 @@ function Header() {
                         </>
                     ) : (
                         <>
-                            <NavLink to="register" className={styles.link} activeClassName={styles.active}>
+                            <NavLink
+                                to="register"
+                                className={styles.link}
+                                activeClassName={styles.active}
+                            >
                                 <Button
                                     variant="contained"
                                     color="primary"
@@ -57,7 +61,11 @@ function Header() {
                                     Регистрация
                                 </Button>
                             </NavLink>
-                            <NavLink to="login" className={styles.link} activeClassName={styles.active}>
+                            <NavLink
+                                to="login"
+                                className={styles.link}
+                                activeClassName={styles.active}
+                            >
                                 <Button
                                     variant="contained"
                                     color="primary"
@@ -72,6 +80,4 @@ function Header() {
             </Toolbar>
         </AppBar>
     );
-}
-
-export default Header;
+};

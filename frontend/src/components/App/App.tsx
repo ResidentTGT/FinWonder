@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router";
-import Header from "../Header/Header";
-import styles from "./App.module.scss";
-import Login from "../Login/Login";
-import RegisterComponent from "../Register/Register";
-import { MainPageComponent } from "../MainPage/MainPage";
-import { LocalStorageEntities } from "../../services/local-storage.service";
-import userService from "../../services/user.service";
-import { tap } from "rxjs/internal/operators/tap";
-import AsideComponent from "../Aside/Aside";
-import BalancesComponent from "../Balances/Balances";
+import React, { useEffect, useState } from 'react';
+import { Switch, Route } from 'react-router';
+import { Header } from '../Header/Header';
+import styles from './App.module.scss';
+import { LoginComponent } from '../Login/Login';
+import { RegisterComponent } from '../Register/Register';
+import { MainPageComponent } from '../MainPage/MainPage';
+import { LocalStorageEntities } from '../../services/local-storage.service';
+import userService from '../../services/user.service';
+import { tap } from 'rxjs/internal/operators/tap';
+import { AsideComponent } from '../Aside/Aside';
+import { BalancesComponent } from '../Balances/Balances';
+import { Subscription } from 'rxjs';
 
-function App() {
+export const App = (): JSX.Element => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const token = localStorage.getItem(LocalStorageEntities.Token);
 
-        let subscription: any = null;
+        let subscription: Subscription;
         if (token) {
             subscription = userService
                 .getUser()
@@ -31,7 +32,7 @@ function App() {
             setLoading(false);
         }
 
-        return () => {
+        return (): void => {
             if (subscription) {
                 subscription.unsubscribe();
             }
@@ -69,7 +70,11 @@ function App() {
                                     path="/balances"
                                     component={BalancesComponent}
                                 />
-                                <Route exact path="/login" component={Login} />
+                                <Route
+                                    exact
+                                    path="/login"
+                                    component={LoginComponent}
+                                />
                             </Switch>
                         </main>
                     </div>
@@ -77,6 +82,4 @@ function App() {
             )}
         </div>
     );
-}
-
-export default App;
+};

@@ -1,19 +1,19 @@
-import { Button } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { EMPTY } from "rxjs";
-import { catchError, tap } from "rxjs/operators";
-import { FieldState } from "../../models/field-state.model";
-import userService from "../../services/user.service";
-import { TextFieldComponent } from "../TextField/TextFieldComponent";
-import { useHistory } from "react-router-dom";
+import { Button } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { EMPTY } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { FieldState } from '../../models/field-state.model';
+import userService from '../../services/user.service';
+import { TextFieldComponent } from '../TextField/TextFieldComponent';
+import { useHistory } from 'react-router-dom';
 
-import styles from "./Login.module.scss";
+import styles from './Login.module.scss';
 
-function LoginComponent() {
+export const LoginComponent = (): JSX.Element => {
     const [password, setPassword] = useState(new FieldState());
     const [email, setEmail] = useState(new FieldState());
-    const [error, setError] = useState("");
+    const [error, setError] = useState('');
 
     const history = useHistory();
 
@@ -25,25 +25,25 @@ function LoginComponent() {
             .pipe(
                 tap((user) => {
                     if (user) {
-                        history.push("/");
+                        history.push('/');
                     }
                 })
             )
             .subscribe();
 
-        return () => {
+        return (): void => {
             subscription.unsubscribe();
         };
     }, [history]);
 
-    const login = () => {
+    const login = (): void => {
         userService
             .login(email.value, password.value)
             .pipe(
-                tap(() => history.push("/")),
+                tap(() => history.push('/')),
                 catchError((e) => {
                     if (e.status === 401) {
-                        setError("Введен неверный логин или пароль.");
+                        setError('Введен неверный логин или пароль.');
                     }
                     return EMPTY;
                 })
@@ -51,15 +51,15 @@ function LoginComponent() {
             .subscribe();
     };
 
-    const setValue = (stateName: string, value: string) => {
+    const setValue = (stateName: string, value: string): void => {
         let func: Function = () => null;
-        let error = "";
+        const error = '';
 
         switch (stateName) {
-            case "password":
+            case 'password':
                 func = setPassword;
                 break;
-            case "email":
+            case 'email':
                 func = setEmail;
                 break;
         }
@@ -69,13 +69,13 @@ function LoginComponent() {
 
     const fields: { label: string; stateName: string; entity: FieldState }[] = [
         {
-            label: "Email",
-            stateName: "email",
+            label: 'Email',
+            stateName: 'email',
             entity: email,
         },
         {
-            label: "Пароль",
-            stateName: "password",
+            label: 'Пароль',
+            stateName: 'password',
             entity: password,
         },
     ];
@@ -89,9 +89,9 @@ function LoginComponent() {
                             label={f.label}
                             entity={f.entity}
                             type={
-                                f.stateName === "password" ? "password" : "text"
+                                f.stateName === 'password' ? 'password' : 'text'
                             }
-                            changeFunc={(value: string) =>
+                            changeFunc={(value: string): void =>
                                 setValue(f.stateName, value)
                             }
                         />
@@ -119,6 +119,4 @@ function LoginComponent() {
             </form>
         </div>
     );
-}
-
-export default LoginComponent;
+};

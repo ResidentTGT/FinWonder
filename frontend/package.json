@@ -30,7 +30,9 @@
         "build": "env-cmd -f .env react-scripts build",
         "build:prod": "env-cmd -f .env.production react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "lint": "eslint --fix src/**/*.{ts,tsx}",
+        "format": "prettier --write src/**/*.{ts,tsx,scss,css,json}"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -50,6 +52,9 @@
     "devDependencies": {
         "@types/jsonwebtoken": "^8.5.0",
         "env-cmd": "^10.1.0",
-        "node-sass": "^4.14.1"
+        "eslint-config-prettier": "^6.15.0",
+        "eslint-plugin-prettier": "^3.1.4",
+        "node-sass": "^4.14.1",
+        "prettier": "^2.2.0"
     }
 }

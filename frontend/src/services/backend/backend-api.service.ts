@@ -1,8 +1,8 @@
 import localStorageService, {
     LocalStorageEntities,
-} from "../local-storage.service";
-import { BalancesApi } from "./balances-api";
-import { UsersApi } from "./users-api";
+} from '../local-storage.service';
+import { BalancesApi } from './balances-api';
+import { UsersApi } from './users-api';
 
 export class BackendApiService {
     public Users: UsersApi;
@@ -13,9 +13,9 @@ export class BackendApiService {
         this.Balances = new BalancesApi(this._apiUrl);
     }
 
-    public getDefaultHeaders(): any {
+    public getDefaultHeaders(): object {
         const headers = {
-            "content-type": "application/json",
+            'content-type': 'application/json',
         };
         const token = localStorageService.getSettings(
             LocalStorageEntities.Token
