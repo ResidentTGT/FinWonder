@@ -15,7 +15,7 @@ const app = express();
 
 connect(env.mongodb.connectionUrl, { useNewUrlParser: true }, function (err) {
     if (err) return console.log(err);
-    app.listen(env.port, (err) => {
+    app.listen(env.port, () => {
         if (err) return console.error(err);
         return console.log(`Server is listening on ${env.port}`);
     });
