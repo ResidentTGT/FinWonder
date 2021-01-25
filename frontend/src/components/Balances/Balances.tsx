@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import { tap } from 'rxjs/internal/operators/tap';
 import { Balance } from '../../models/balance.model';
 import balancesService from '../../services/balances.service';
+import { BalanceDialogComponent } from '../BalanceDialog/BalanceDialog';
 import { LoadingSpinnerComponent } from '../shared/LoadingSpinner/LoadingSpinner';
 import { TableRowComponent } from '../TableRow/TableRow';
 import styles from './Balances.module.scss';
@@ -19,6 +20,15 @@ import styles from './Balances.module.scss';
 export const BalancesComponent = (): JSX.Element => {
     const [balances, setBalances] = useState<Balance[]>([]);
     const [loading, setLoading] = useState(true);
+    const [openDialog, setOpenDialog] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpenDialog(true);
+    };
+
+    const handleClose = () => {
+        setOpenDialog(false);
+    };
 
     useEffect(() => {
         const subscription = balancesService
@@ -49,9 +59,14 @@ export const BalancesComponent = (): JSX.Element => {
                     variant="contained"
                     color="primary"
                     className={styles.create}
+                    onClick={handleClickOpen}
                 >
                     Создать новый
                 </Button>
+                <BalanceDialogComponent
+                    open={openDialog}
+                    handleClose={handleClose}
+                ></BalanceDialogComponent>
             </div>
             <div className={styles.tableLayout}>
                 {loading && <LoadingSpinnerComponent />}

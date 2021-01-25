@@ -52,7 +52,7 @@ export const LoginComponent = (): JSX.Element => {
     };
 
     const setValue = (stateName: string, value: string): void => {
-        let func: Function = () => null;
+        let func: React.Dispatch<React.SetStateAction<FieldState>> = () => null;
         const error = '';
 
         switch (stateName) {

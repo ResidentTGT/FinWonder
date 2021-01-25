@@ -66,7 +66,7 @@ export const RegisterComponent = (): JSX.Element => {
     };
 
     const setValue = (stateName: string, value: string): void => {
-        let func: Function = () => null;
+        let func: React.Dispatch<React.SetStateAction<FieldState>> = () => null;
         let error = '';
 
         switch (stateName) {

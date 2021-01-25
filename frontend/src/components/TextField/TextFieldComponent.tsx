@@ -6,7 +6,7 @@ import styles from './TextFieldComponent.module.scss';
 export type TextFieldProps = {
     label: string;
     entity: FieldState;
-    changeFunc: Function;
+    changeFunc: (value: string) => void;
     type: string;
 };
 

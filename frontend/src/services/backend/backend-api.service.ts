@@ -13,8 +13,8 @@ export class BackendApiService {
         this.Balances = new BalancesApi(this._apiUrl);
     }
 
-    public getDefaultHeaders(): object {
-        const headers = {
+    public getDefaultHeaders(): Record<string, string> {
+        const headers: Record<string, string> = {
             'content-type': 'application/json',
         };
         const token = localStorageService.getSettings(
