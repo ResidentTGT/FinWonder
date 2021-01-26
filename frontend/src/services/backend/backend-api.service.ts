@@ -1,6 +1,4 @@
-import localStorageService, {
-    LocalStorageEntities,
-} from '../local-storage.service';
+import localStorageService, { LocalStorageEntities } from '../local-storage.service';
 import { BalancesApi } from './balances-api';
 import { UsersApi } from './users-api';
 
@@ -17,9 +15,7 @@ export class BackendApiService {
         const headers: Record<string, string> = {
             'content-type': 'application/json',
         };
-        const token = localStorageService.getSettings(
-            LocalStorageEntities.Token
-        );
+        const token = localStorageService.getSettings(LocalStorageEntities.Token);
         if (token) {
             Object.assign(headers, {
                 Authorization: `Bearer ${JSON.parse(token)}`,
@@ -28,7 +24,5 @@ export class BackendApiService {
         return headers;
     }
 }
-const backendApiService = new BackendApiService(
-    process.env.REACT_APP_API_URL as string
-);
+const backendApiService = new BackendApiService(process.env.REACT_APP_API_URL as string);
 export default backendApiService;

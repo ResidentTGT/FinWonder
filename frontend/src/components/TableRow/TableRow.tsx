@@ -18,7 +18,7 @@ const StyledTableCell = withStyles(() =>
     })
 )(TableCell);
 
-export const TableRowComponent = (props: { balance: Balance }): JSX.Element => {
+export const TableRowComponent = (props: { balance: Balance; onEditClick: any }): JSX.Element => {
     const { balance } = props;
     const [checked, setChecked] = useState(balance.isActive);
 
@@ -31,18 +31,12 @@ export const TableRowComponent = (props: { balance: Balance }): JSX.Element => {
             <TableRow>
                 <StyledTableCell>{balance.name}</StyledTableCell>
                 <StyledTableCell>{balance.description}</StyledTableCell>
+                <StyledTableCell>{balance.creationDate?.toLocaleDateString()}</StyledTableCell>
                 <StyledTableCell>
-                    {balance.creationDate?.toLocaleDateString()}
+                    <Checkbox checked={checked} onChange={handleChange} color="primary" />
                 </StyledTableCell>
                 <StyledTableCell>
-                    <Checkbox
-                        checked={checked}
-                        onChange={handleChange}
-                        color="primary"
-                    />
-                </StyledTableCell>
-                <StyledTableCell>
-                    <IconButton color="primary">
+                    <IconButton color="primary" onClick={props.onEditClick}>
                         <EditIcon />
                     </IconButton>
                 </StyledTableCell>

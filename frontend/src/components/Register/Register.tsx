@@ -85,8 +85,7 @@ export const RegisterComponent = (): JSX.Element => {
                     break;
                 }
                 if (!/([0-9].*[a-z])|([a-z].*[0-9])/.test(value)) {
-                    error =
-                        'Пароль должен содержать хотя бы одну букву и цифру';
+                    error = 'Пароль должен содержать хотя бы одну букву и цифру';
                     break;
                 }
                 break;
@@ -134,12 +133,8 @@ export const RegisterComponent = (): JSX.Element => {
                         <TextFieldComponent
                             label={f.label}
                             entity={f.entity}
-                            type={
-                                f.stateName === 'password' ? 'password' : 'text'
-                            }
-                            changeFunc={(value: string): void =>
-                                setValue(f.stateName, value)
-                            }
+                            type={f.stateName === 'password' ? 'password' : 'text'}
+                            changeFunc={(value: string): void => setValue(f.stateName, value)}
                         />
                     </div>
                 ))}

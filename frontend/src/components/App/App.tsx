@@ -55,26 +55,10 @@ export const App = (): JSX.Element => {
                         </aside>
                         <main className={styles.main}>
                             <Switch>
-                                <Route
-                                    exact
-                                    path="/"
-                                    component={MainPageComponent}
-                                />
-                                <Route
-                                    exact
-                                    path="/register"
-                                    component={RegisterComponent}
-                                />
-                                <Route
-                                    exact
-                                    path="/balances"
-                                    component={BalancesComponent}
-                                />
-                                <Route
-                                    exact
-                                    path="/login"
-                                    component={LoginComponent}
-                                />
+                                <Route exact path="/" component={MainPageComponent} />
+                                <Route exact path="/register" component={RegisterComponent} />
+                                <Route exact path="/balances" component={BalancesComponent} />
+                                <Route exact path="/login" component={LoginComponent} />
                             </Switch>
                         </main>
                     </div>

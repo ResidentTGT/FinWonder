@@ -12,7 +12,10 @@ import React, { useEffect, useState } from 'react';
 import { tap } from 'rxjs/internal/operators/tap';
 import { Balance } from '../../models/balance.model';
 import balancesService from '../../services/balances.service';
-import { BalanceDialogComponent } from '../BalanceDialog/BalanceDialog';
+import {
+    BalanceDialogComponent,
+    BalanceDialogPropsInterface,
+} from '../BalanceDialog/BalanceDialog';
 import { LoadingSpinnerComponent } from '../shared/LoadingSpinner/LoadingSpinner';
 import { TableRowComponent } from '../TableRow/TableRow';
 import styles from './Balances.module.scss';
@@ -20,14 +23,20 @@ import styles from './Balances.module.scss';
 export const BalancesComponent = (): JSX.Element => {
     const [balances, setBalances] = useState<Balance[]>([]);
     const [loading, setLoading] = useState(true);
-    const [openDialog, setOpenDialog] = React.useState(false);
-
-    const handleClickOpen = () => {
-        setOpenDialog(true);
-    };
+    const [dialogParams, setDialogParams] = useState<BalanceDialogPropsInterface>({
+        open: false,
+    });
 
     const handleClose = () => {
-        setOpenDialog(false);
+        setDialogParams({ open: false });
+    };
+
+    const handleClickOpen = (balance?: Balance) => {
+        setDialogParams({
+            open: true,
+            handleClose,
+            balance: balance ?? new Balance(),
+        });
     };
 
     useEffect(() => {
@@ -52,43 +61,53 @@ export const BalancesComponent = (): JSX.Element => {
     }, []);
 
     return (
-        <div className={styles.layout}>
-            <div className={styles.actions}>
-                <span className={styles.title}>Таблица балансов</span>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    className={styles.create}
-                    onClick={handleClickOpen}
-                >
-                    Создать новый
-                </Button>
+        <>
+            {dialogParams.open && (
                 <BalanceDialogComponent
-                    open={openDialog}
-                    handleClose={handleClose}
+                    balance={dialogParams.balance}
+                    open={dialogParams.open}
+                    handleClose={dialogParams.handleClose}
                 ></BalanceDialogComponent>
+            )}
+
+            <div className={styles.layout}>
+                <div className={styles.actions}>
+                    <span className={styles.title}>Таблица балансов</span>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        className={styles.create}
+                        onClick={() => handleClickOpen()}
+                    >
+                        Создать новый
+                    </Button>
+                </div>
+                <div className={styles.tableLayout}>
+                    {loading && <LoadingSpinnerComponent />}
+                    <TableContainer className={styles.table} component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Название</TableCell>
+                                    <TableCell>Описание</TableCell>
+                                    <TableCell>Дата создания</TableCell>
+                                    <TableCell>Активен</TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {balances.map((b) => (
+                                    <TableRowComponent
+                                        key={b.id}
+                                        balance={b}
+                                        onEditClick={() => handleClickOpen(b)}
+                                    />
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
             </div>
-            <div className={styles.tableLayout}>
-                {loading && <LoadingSpinnerComponent />}
-                <TableContainer className={styles.table} component={Paper}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Название</TableCell>
-                                <TableCell>Описание</TableCell>
-                                <TableCell>Дата создания</TableCell>
-                                <TableCell>Активен</TableCell>
-                                <TableCell></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {balances.map((b) => (
-                                <TableRowComponent key={b.id} balance={b} />
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </div>
-        </div>
+        </>
     );
 };

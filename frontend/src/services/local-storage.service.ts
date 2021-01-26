@@ -3,13 +3,9 @@ export enum LocalStorageEntities {
 }
 
 export class LocalStorageService {
-    public getSettings = (key: LocalStorageEntities): string | null =>
-        localStorage.getItem(key);
+    public getSettings = (key: LocalStorageEntities): string | null => localStorage.getItem(key);
 
-    public setSettings(
-        key: LocalStorageEntities,
-        object: Record<string, unknown> | string
-    ): void {
+    public setSettings(key: LocalStorageEntities, object: Record<string, unknown> | string): void {
         if (!key) {
             throw new Error('There is no key for setting in local storage.');
         }

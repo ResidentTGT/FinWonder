@@ -8,11 +8,7 @@ import backendApiService from './backend-api.service';
 export class UsersApi {
     constructor(private _apiUrl: string) {}
 
-    public register(
-        name: string,
-        password: string,
-        email: string
-    ): Observable<User> {
+    public register(name: string, password: string, email: string): Observable<User> {
         if (!name || !password || !email) {
             return EMPTY;
         }

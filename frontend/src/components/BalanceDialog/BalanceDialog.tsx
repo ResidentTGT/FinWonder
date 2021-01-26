@@ -3,48 +3,61 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle,
     TextField,
 } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import styles from './BalanceDialog.module.scss';
+import { Balance } from '../../models/balance.model';
+import isNullOrWhitespace from '../../helpers/isNullOrWhitespace';
 
-interface BalanceDialogPropsInterface {
+export interface BalanceDialogPropsInterface {
     open: boolean;
-    handleClose: any;
+    handleClose?: any;
+    balance?: Balance;
 }
 
 export const BalanceDialogComponent = ({
     open,
     handleClose,
+    balance,
 }: BalanceDialogPropsInterface): JSX.Element => {
+    const [name, setName] = useState<string>('');
+    const [, setDescription] = useState<string>('');
+    const [error, setError] = useState<string>();
+
+    useEffect(() => {
+        setName(balance?.name ?? '');
+        setDescription(balance?.description ?? '');
+    }, [balance]);
+
     return (
-        <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="form-dialog-title"
-        >
-            <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    To subscribe to this website, please enter your email
-                    address here. We will send updates occasionally.
-                </DialogContentText>
+        <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>{balance?.id ? 'Редактирование' : 'Создание'}</DialogTitle>
+            <DialogContent className={styles.content}>
                 <TextField
+                    required
+                    className={styles.name}
+                    label="Название"
+                    type="text"
+                    value={name}
                     autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Email Address"
-                    type="email"
+                    error={!!error}
                     fullWidth
+                    helperText={error}
+                    onChange={(event): void => {
+                        const newValue = event.target.value;
+                        setName(newValue);
+                        setError(isNullOrWhitespace(newValue) ? 'Обязательное поле' : '');
+                    }}
                 />
             </DialogContent>
-            <DialogActions>
+            <DialogActions className={styles.actions}>
                 <Button onClick={handleClose} color="primary">
-                    Cancel
+                    Отмена
                 </Button>
-                <Button onClick={handleClose} color="primary">
-                    Subscribe
+                <Button onClick={handleClose} color="primary" variant="contained">
+                    Сохранить
                 </Button>
             </DialogActions>
         </Dialog>

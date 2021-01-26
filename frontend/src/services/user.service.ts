@@ -1,12 +1,8 @@
 import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
 import { User } from '../models/user.model';
-import backendService, {
-    BackendApiService,
-} from './backend/backend-api.service';
+import backendService, { BackendApiService } from './backend/backend-api.service';
 import { catchError, tap } from 'rxjs/operators';
-import localStorageService, {
-    LocalStorageEntities,
-} from './local-storage.service';
+import localStorageService, { LocalStorageEntities } from './local-storage.service';
 
 export class UserService {
     private _user: BehaviorSubject<User> = new BehaviorSubject(new User());
@@ -16,15 +12,11 @@ export class UserService {
         // if(user && user.token &&)
     }
 
-    public getUserObservable = (): Observable<User> =>
-        this._user.asObservable();
+    public getUserObservable = (): Observable<User> => this._user.asObservable();
 
     public setUser(user: User): void {
         if (user && user.token) {
-            localStorageService.setSettings(
-                LocalStorageEntities.Token,
-                user.token
-            );
+            localStorageService.setSettings(LocalStorageEntities.Token, user.token);
         }
 
         this._user.next(user);
@@ -37,20 +29,13 @@ export class UserService {
 
         return this._backendApiService.Users.login(email, password).pipe(
             tap((resp) => {
-                localStorage.setItem(
-                    LocalStorageEntities.Token,
-                    JSON.stringify(resp.token)
-                );
+                localStorage.setItem(LocalStorageEntities.Token, JSON.stringify(resp.token));
                 this._user.next(resp);
             })
         );
     }
 
-    public register(
-        name: string,
-        password: string,
-        email: string
-    ): Observable<User> {
+    public register(name: string, password: string, email: string): Observable<User> {
         if (!name || !password || !email) {
             return EMPTY;
         }

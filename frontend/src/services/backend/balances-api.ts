@@ -9,12 +9,7 @@ export class BalancesApi {
 
     public get(): Observable<Balance[]> {
         return ajax
-            .get(
-                `${this._apiUrl}/balances`,
-                backendApiService.getDefaultHeaders()
-            )
-            .pipe(
-                map((r) => r.response.map((b: Balance) => Balance.fromJSON(b)))
-            );
+            .get(`${this._apiUrl}/balances`, backendApiService.getDefaultHeaders())
+            .pipe(map((r) => r.response.map((b: Balance) => Balance.fromJSON(b))));
     }
 }

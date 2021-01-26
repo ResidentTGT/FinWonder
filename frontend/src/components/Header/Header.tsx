@@ -9,9 +9,7 @@ import styles from './Header.module.scss';
 import userService from '../../services/user.service';
 import { tap } from 'rxjs/internal/operators/tap';
 import { User } from '../../models/user.model';
-import localStorageService, {
-    LocalStorageEntities,
-} from '../../services/local-storage.service';
+import localStorageService, { LocalStorageEntities } from '../../services/local-storage.service';
 
 export const Header = (): JSX.Element => {
     const [user, setUser] = useState<User>();
@@ -53,11 +51,7 @@ export const Header = (): JSX.Element => {
                                 className={styles.link}
                                 activeClassName={styles.active}
                             >
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    disableElevation
-                                >
+                                <Button variant="contained" color="primary" disableElevation>
                                     Регистрация
                                 </Button>
                             </NavLink>
@@ -66,11 +60,7 @@ export const Header = (): JSX.Element => {
                                 className={styles.link}
                                 activeClassName={styles.active}
                             >
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    disableElevation
-                                >
+                                <Button variant="contained" color="primary" disableElevation>
                                     Вход
                                 </Button>
                             </NavLink>

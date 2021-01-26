@@ -88,12 +88,8 @@ export const LoginComponent = (): JSX.Element => {
                         <TextFieldComponent
                             label={f.label}
                             entity={f.entity}
-                            type={
-                                f.stateName === 'password' ? 'password' : 'text'
-                            }
-                            changeFunc={(value: string): void =>
-                                setValue(f.stateName, value)
-                            }
+                            type={f.stateName === 'password' ? 'password' : 'text'}
+                            changeFunc={(value: string): void => setValue(f.stateName, value)}
                         />
                     </div>
                 ))}

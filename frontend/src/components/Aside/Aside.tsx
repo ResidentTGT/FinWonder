@@ -10,12 +10,7 @@ export const AsideComponent = (): JSX.Element => {
     return (
         <div className={styles.layout}>
             <List>
-                <ListItem
-                    button
-                    component={NavLink}
-                    to="balances"
-                    activeClassName={styles.active}
-                >
+                <ListItem button component={NavLink} to="balances" activeClassName={styles.active}>
                     <ListItemIcon>
                         <InboxIcon />
                     </ListItemIcon>
