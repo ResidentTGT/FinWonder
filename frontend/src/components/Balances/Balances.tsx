@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import {
     TableRow,
     TableCell,
@@ -22,24 +23,41 @@ import styles from './Balances.module.scss';
 
 export const BalancesComponent = (): JSX.Element => {
     const [balances, setBalances] = useState<Balance[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [dialogParams, setDialogParams] = useState<BalanceDialogPropsInterface>({
-        open: false,
-    });
+    const [loading, setLoading] = useState(false);
+    const [dialogParams, setDialogParams] = useState<BalanceDialogPropsInterface>();
 
-    const handleClose = () => {
-        setDialogParams({ open: false });
+    const handleModalAction = (reload?: boolean): void => {
+        if (reload) {
+            setLoading(true);
+
+            balancesService
+                .get()
+                .pipe(
+                    tap((balances) => {
+                        setBalances(balances);
+                    })
+                )
+                .subscribe({
+                    complete: () => {
+                        setLoading(false);
+                    },
+                });
+        }
+
+        setDialogParams(undefined);
     };
 
     const handleClickOpen = (balance?: Balance) => {
         setDialogParams({
             open: true,
-            handleClose,
+            handleClose: (reload?: boolean) => handleModalAction(reload),
             balance: balance ?? new Balance(),
         });
     };
 
     useEffect(() => {
+        setLoading(true);
+
         const subscription = balancesService
             .get()
             .pipe(
@@ -62,7 +80,7 @@ export const BalancesComponent = (): JSX.Element => {
 
     return (
         <>
-            {dialogParams.open && (
+            {dialogParams && (
                 <BalanceDialogComponent
                     balance={dialogParams.balance}
                     open={dialogParams.open}

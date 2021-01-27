@@ -10,11 +10,15 @@ import React, { useEffect, useState } from 'react';
 import styles from './BalanceDialog.module.scss';
 import { Balance } from '../../models/balance.model';
 import isNullOrWhitespace from '../../helpers/isNullOrWhitespace';
+import balancesService from '../../services/balances.service';
+import { tap } from 'rxjs/operators';
+
+import { LoadingSpinnerComponent } from '../shared/LoadingSpinner/LoadingSpinner';
 
 export interface BalanceDialogPropsInterface {
     open: boolean;
-    handleClose?: any;
-    balance?: Balance;
+    handleClose: (reload?: boolean) => void;
+    balance: Balance;
 }
 
 export const BalanceDialogComponent = ({
@@ -23,16 +27,39 @@ export const BalanceDialogComponent = ({
     balance,
 }: BalanceDialogPropsInterface): JSX.Element => {
     const [name, setName] = useState<string>('');
-    const [, setDescription] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
     const [error, setError] = useState<string>();
+    const [loading, setLoading] = useState(false);
+
+    const handleSave = () => {
+        setLoading(true);
+        balancesService
+            .save(
+                Object.assign(new Balance(), balance, {
+                    name,
+                    description,
+                })
+            )
+            .pipe(
+                tap(() => {
+                    handleClose(true);
+                })
+            )
+            .subscribe({
+                complete: () => {
+                    setLoading(false);
+                },
+            });
+    };
 
     useEffect(() => {
-        setName(balance?.name ?? '');
-        setDescription(balance?.description ?? '');
+        setName(balance.name ?? '');
+        setDescription(balance.description ?? '');
     }, [balance]);
 
     return (
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={open} onClose={() => handleClose()}>
+            {loading && <LoadingSpinnerComponent />}
             <DialogTitle>{balance?.id ? 'Редактирование' : 'Создание'}</DialogTitle>
             <DialogContent className={styles.content}>
                 <TextField
@@ -53,10 +80,10 @@ export const BalanceDialogComponent = ({
                 />
             </DialogContent>
             <DialogActions className={styles.actions}>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={() => handleClose()} color="primary">
                     Отмена
                 </Button>
-                <Button onClick={handleClose} color="primary" variant="contained">
+                <Button onClick={handleSave} color="primary" variant="contained">
                     Сохранить
                 </Button>
             </DialogActions>

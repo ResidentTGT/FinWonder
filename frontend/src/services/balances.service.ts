@@ -15,6 +15,16 @@ export class BalancesService {
             })
         );
     }
+
+    public save(balance: Balance): Observable<Balance> {
+        return this._backendApiService.Balances.save(balance).pipe(
+            catchError((resp) => {
+                console.log(resp);
+
+                return EMPTY;
+            })
+        );
+    }
 }
 
 const balancesService = new BalancesService(backendService);

@@ -12,4 +12,10 @@ export class BalancesApi {
             .get(`${this._apiUrl}/balances`, backendApiService.getDefaultHeaders())
             .pipe(map((r) => r.response.map((b: Balance) => Balance.fromJSON(b))));
     }
+
+    public save(balance: Balance): Observable<Balance> {
+        return ajax
+            .post(`${this._apiUrl}/balances`, balance, backendApiService.getDefaultHeaders())
+            .pipe(map((r) => Balance.fromJSON(r.response)));
+    }
 }
